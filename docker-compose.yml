@@ -68,9 +68,10 @@ services:
       start_period: 10s
 
   backend:
-    build:
-      context: ./src
-      dockerfile: EkospolTest.Backend/Dockerfile
+    # build:
+    #   context: ./src
+    #   dockerfile: EkospolTest.Backend/Dockerfile
+    image: bekallaev/phonebook-api:1.0
     container_name: ekospol-backend
     restart: unless-stopped
     environment:
@@ -86,8 +87,9 @@ services:
         condition: service_healthy
 
   frontend:
-    build:
-      context: ./src/EkospolTest.Frontend
+    # build:
+    #   context: ./src/EkospolTest.Frontend
+    image: bekallaev/phonebook-web:1.0
     container_name: ekospol-frontend
     restart: unless-stopped
     ports:
