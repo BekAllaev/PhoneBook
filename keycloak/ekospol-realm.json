@@ -4,6 +4,9 @@
   "registrationAllowed": true,
   "loginWithEmailAllowed": true,
   "sslRequired": "external",
+  "internationalizationEnabled": true,
+  "supportedLocales": ["cs"],
+  "defaultLocale": "cs",
   "clients": [
     {
       "clientId": "ekospol-frontend",

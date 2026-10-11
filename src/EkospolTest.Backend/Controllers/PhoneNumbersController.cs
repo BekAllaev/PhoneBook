@@ -23,8 +23,16 @@ namespace EkospolTest.Backend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PhoneNumberResponse>>> GetAll(CancellationToken cancellationToken)
         {
+            var ownerId = User.FindFirstValue("sub");
+            if (string.IsNullOrEmpty(ownerId))
+            {
+                return Unauthorized();
+            }
+
+            // Users see public numbers and their own private ones.
             var phoneNumbers = await _dbContext.PhoneNumbers
                 .AsNoTracking()
+                .Where(p => p.IsPublic || p.OwnerId == ownerId)
                 .OrderBy(p => p.Id)
                 .Select(p => PhoneNumberResponse.FromEntity(p))
                 .ToListAsync(cancellationToken);
@@ -47,7 +55,8 @@ namespace EkospolTest.Backend.Controllers
             {
                 Number = request.Number.Trim(),
                 IsPublic = request.IsPublic,
-                OwnerId = ownerId
+                OwnerId = ownerId,
+                OwnerUsername = User.Identity?.Name ?? string.Empty
             };
 
             _dbContext.PhoneNumbers.Add(phoneNumber);

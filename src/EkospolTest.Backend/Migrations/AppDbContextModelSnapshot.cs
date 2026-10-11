@@ -46,6 +46,12 @@ namespace EkospolTest.Backend.Migrations
                         .HasColumnType("character varying(255)")
                         .HasColumnName("owner_id");
 
+                    b.Property<string>("OwnerUsername")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("owner_username");
+
                     b.HasKey("Id");
 
                     b.ToTable("phone_numbers", (string)null);

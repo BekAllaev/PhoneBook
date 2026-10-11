@@ -28,14 +28,14 @@ export class PhoneNumbers implements OnInit {
         this.number = '';
         this.isPublic = false;
       },
-      error: () => this.error.set('Не удалось добавить номер.'),
+      error: () => this.error.set('Číslo se nepodařilo přidat.'),
     });
   }
 
   private load(): void {
     this.phoneNumbersService.getAll().subscribe({
       next: (list) => this.phoneNumbers.set(list),
-      error: () => this.error.set('Не удалось загрузить номера.'),
+      error: () => this.error.set('Čísla se nepodařilo načíst.'),
     });
   }
 }
