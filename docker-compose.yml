@@ -17,6 +17,24 @@ services:
       timeout: 5s
       retries: 10
 
+  # Creates Keycloak's database on first start. A script in /docker-entrypoint-initdb.d
+  # would only run on an empty volume, so this also covers an existing postgres-data volume.
+  keycloak-db-init:
+    image: postgres:17
+    container_name: ekospol-keycloak-db-init
+    environment:
+      PGHOST: postgres
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      PGDATABASE: ekospol
+    command:
+      - sh
+      - -c
+      - psql -tAc "SELECT 1 FROM pg_database WHERE datname = 'keycloak'" | grep -q 1 || psql -c "CREATE DATABASE keycloak"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   keycloak:
     image: quay.io/keycloak/keycloak:26.4
     container_name: ekospol-keycloak
@@ -25,6 +43,11 @@ services:
     environment:
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      # Keep realms, users and sessions in Postgres instead of the container's dev H2 database.
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_DB_USERNAME: postgres
+      KC_DB_PASSWORD: postgres
       KC_HEALTH_ENABLED: "true"
       # Browser-facing URL; tokens are issued for it. Back-channel calls from other
       # containers (http://keycloak:8080) keep their own host.
@@ -34,6 +57,9 @@ services:
       - "8080:8080"
     volumes:
       - ./keycloak/ekospol-realm.json:/opt/keycloak/data/import/ekospol-realm.json:ro
+    depends_on:
+      keycloak-db-init:
+        condition: service_completed_successfully
     healthcheck:
       test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/9000 && printf 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && grep -q UP <&3"]
       interval: 5s

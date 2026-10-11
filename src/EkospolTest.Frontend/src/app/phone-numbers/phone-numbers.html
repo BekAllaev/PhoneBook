@@ -2,9 +2,9 @@
   <input name="number" [(ngModel)]="number" placeholder="+420 123 456 789" required />
   <label>
     <input type="checkbox" name="isPublic" [(ngModel)]="isPublic" />
-    Публичный
+    Veřejné
   </label>
-  <button type="submit" [disabled]="!number.trim()">Добавить</button>
+  <button type="submit" [disabled]="!number.trim()">Přidat</button>
 </form>
 
 @if (error()) {
@@ -14,21 +14,21 @@
 <table>
   <thead>
     <tr>
-      <th>Номер</th>
-      <th>Публичный</th>
-      <th>Владелец</th>
+      <th>Číslo</th>
+      <th>Veřejné</th>
+      <th>Vlastník</th>
     </tr>
   </thead>
   <tbody>
     @for (phoneNumber of phoneNumbers(); track phoneNumber.id) {
       <tr>
         <td>{{ phoneNumber.number }}</td>
-        <td>{{ phoneNumber.isPublic ? 'Да' : 'Нет' }}</td>
-        <td>{{ phoneNumber.ownerId }}</td>
+        <td>{{ phoneNumber.isPublic ? 'Ano' : 'Ne' }}</td>
+        <td>{{ phoneNumber.ownerUsername }}</td>
       </tr>
     } @empty {
       <tr>
-        <td colspan="3">Номеров пока нет.</td>
+        <td colspan="3">Zatím nejsou žádná čísla.</td>
       </tr>
     }
   </tbody>

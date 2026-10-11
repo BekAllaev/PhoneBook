@@ -7,6 +7,7 @@ export interface PhoneNumber {
   number: string;
   isPublic: boolean;
   ownerId: string;
+  ownerUsername: string;
 }
 
 export interface CreatePhoneNumberRequest {

@@ -12,12 +12,15 @@ namespace EkospolTest.Backend.Dtos
 
         public string OwnerId { get; set; } = string.Empty;
 
+        public string OwnerUsername { get; set; } = string.Empty;
+
         public static PhoneNumberResponse FromEntity(PhoneNumber phoneNumber) => new()
         {
             Id = phoneNumber.Id,
             Number = phoneNumber.Number,
             IsPublic = phoneNumber.IsPublic,
-            OwnerId = phoneNumber.OwnerId
+            OwnerId = phoneNumber.OwnerId,
+            OwnerUsername = phoneNumber.OwnerUsername
         };
     }
 }
