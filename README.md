@@ -81,8 +81,8 @@ Administrace Keycloaku: <http://localhost:8080/admin> (`admin` / `admin`).
 
 Ve výchozím stavu `docker-compose.yml` používá hotové obrazy z Docker Hubu:
 
-- `bekallaev/phonebook-api:1.0` (backend)
-- `bekallaev/phonebook-web:1.0` (frontend)
+- [`bekallaev/phonebook-api:1.0`](https://hub.docker.com/r/bekallaev/phonebook-api) (backend)
+- [`bekallaev/phonebook-web:1.0`](https://hub.docker.com/r/bekallaev/phonebook-web) (frontend)
 
 Chcete-li sestavit obrazy ze zdrojového kódu v repozitáři, odkomentujte u služeb `backend`
 a `frontend` sekci `build:` a zakomentujte řádek `image:`. Poté spusťte:
